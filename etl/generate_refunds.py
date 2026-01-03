@@ -32,6 +32,10 @@ orders = orders.merge(order_totals, on="order_id", how="left")
 # Handle missing order_amounts safely
 orders["order_amount"] = orders["order_amount"].fillna(0)
 
+# Log data quality issue (do not fail pipeline)
+missing_orders = orders[orders["order_amount"] == 0].shape[0]
+print(f"Warning: {missing_orders} refunded orders had zero order value")
+
 #
 #
 # ----------------------------
